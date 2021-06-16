@@ -1,0 +1,376 @@
+openapi: 3.0.0
+info:
+  title: 'API Desafio Bravo - Hurb'
+  description: 'API by Victor Rosa'
+  termsOfService: ''
+  contact:
+    email: victoraugustorosa@gmail.com
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost/api'
+    description: Localhost
+paths:
+  /currency/:
+    get:
+      tags:
+        - currency
+      summary: 'Returns currencies.'
+      description: 'Returns all currencies.'
+      operationId: 'App\Http\Controllers\CurrencyController::getAllCurrencies'
+      responses:
+        '200':
+          description: 'Get data of currencies.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOk'
+        '422':
+          description: 'Bad Request. Problem usually happens when request required specifc field was not entered.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    post:
+      tags:
+        - currency
+      summary: 'Returns currency by id.'
+      description: 'Returns currency data.'
+      operationId: 'App\Http\Controllers\CurrencyController::newCurrency'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyPostBody'
+      responses:
+        '200':
+          description: 'Get data of currencies.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCreated'
+        '422':
+          description: 'Bad Request. Problem usually happens when request required specifc field was not entered.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  '/currency/{id}':
+    get:
+      tags:
+        - currency
+      summary: 'Returns currency by id.'
+      description: 'Returns currency data.'
+      operationId: 'App\Http\Controllers\CurrencyController::getCurrencyById'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Defines currency id.'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Get data of currencies.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOkData'
+        '422':
+          description: 'Bad Request. Problem usually happens when request required specifc field was not entered.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    put:
+      tags:
+        - currency
+      summary: 'Returns currency by id.'
+      description: 'Returns currency data.'
+      operationId: 'App\Http\Controllers\CurrencyController::updateAllItemsCurrency'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Defines currency id.'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Get data of currencies.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOkData'
+        '422':
+          description: 'Bad Request. Problem usually happens when request required specifc field was not entered.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    patch:
+      tags:
+        - currency
+      summary: 'Returns currency by id.'
+      description: 'Returns currency data.'
+      operationId: 'App\Http\Controllers\CurrencyController::updateItemsCurrency'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Defines currency id.'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Get data of currencies.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOkData'
+        '422':
+          description: 'Bad Request. Problem usually happens when request required specifc field was not entered.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  /currency:
+    get:
+      tags:
+        - currency
+      summary: 'Returns currency by id.'
+      description: 'Returns currency data.'
+      operationId: 'App\Http\Controllers\CurrencyController::converterCurrency'
+      parameters:
+        -
+          name: from
+          in: query
+          description: 'Defines currency'
+          required: true
+          schema:
+            type: string
+        -
+          name: to
+          in: query
+          description: 'Defines currency to be converted'
+          required: true
+          schema:
+            type: string
+        -
+          name: amount
+          in: query
+          description: 'Defines values to currency from'
+          required: true
+          schema:
+            type: number
+            format: double
+            example: 0.01
+      responses:
+        '200':
+          description: 'Get data of currency converted.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseOkAmount'
+        '422':
+          description: 'Bad Request. Problem usually happens when request required specifc field was not entered.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+components:
+  schemas:
+    CurrencyResource:
+      description: 'Response model of data currency'
+      properties:
+        id:
+          type: integer
+        initials:
+          type: string
+        description:
+          type: string
+        money_backing:
+          type: number
+          format: double
+          example: 0.01
+        created_at:
+          type: string
+          example: '2021-06-12 13:43:43'
+        updated_at:
+          type: string
+          example: '2021-06-12 13:43:43'
+      type: object
+    CurrencyPostBody:
+      description: 'Body model of data currency'
+      properties:
+        initials:
+          type: string
+        description:
+          type: string
+        money_backing:
+          type: number
+          format: double
+          example: 0.01
+      type: object
+    CurrencyAmount:
+      description: 'Body model of data currency converted'
+      properties:
+        currencyFrom:
+          type: string
+        currencyTo:
+          type: string
+        amountConverted:
+          type: number
+          format: double
+          example: 0.01
+      type: object
+    success:
+      description: 'Part of the requisition model'
+      properties:
+        success:
+          type: boolean
+          example: true
+      type: object
+    successFalse:
+      description: 'Part of the requisition model'
+      properties:
+        success:
+          type: boolean
+          example: false
+      type: object
+    uuid:
+      description: 'Part of the requisition model'
+      properties:
+        uuid:
+          type: string
+          example: 216e2374-a999-4dda-a390-6ec1e2b622e4
+      type: object
+    messageOk:
+      description: 'Part of the requisition model'
+      properties:
+        message:
+          type: string
+          example: OK
+      type: object
+    messageError:
+      description: 'Part of the requisition model'
+      properties:
+        message:
+          type: string
+          example: Error
+      type: object
+    messageCreated:
+      description: 'Part of the requisition model'
+      properties:
+        message:
+          type: string
+          example: Created
+      type: object
+    statusOk:
+      description: 'Part of the requisition model'
+      properties:
+        status:
+          type: integer
+          example: '200'
+      type: object
+    statusCreated:
+      description: 'Part of the requisition model'
+      properties:
+        status:
+          type: integer
+          example: '201'
+      type: object
+    dataArray:
+      description: 'Part of the requisition model'
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CurrencyResource'
+      type: object
+    data:
+      description: 'Part of the requisition model'
+      properties:
+        data:
+          $ref: '#/components/schemas/CurrencyResource'
+      type: object
+    dataAmount:
+      description: 'Part of the requisition model'
+      properties:
+        data:
+          $ref: '#/components/schemas/CurrencyAmount'
+      type: object
+    errors:
+      description: 'Part of the requisition model'
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+            example: 'Id field is required!'
+      type: object
+    ResponseOk:
+      description: 'Request model to update attachment data.'
+      allOf:
+        -
+          $ref: '#/components/schemas/success'
+        -
+          $ref: '#/components/schemas/dataArray'
+        -
+          $ref: '#/components/schemas/statusOk'
+        -
+          $ref: '#/components/schemas/messageOk'
+        -
+          $ref: '#/components/schemas/uuid'
+    ResponseOkAmount:
+      description: 'Request model to update attachment data.'
+      allOf:
+        -
+          $ref: '#/components/schemas/success'
+        -
+          $ref: '#/components/schemas/dataAmount'
+        -
+          $ref: '#/components/schemas/statusOk'
+        -
+          $ref: '#/components/schemas/messageOk'
+        -
+          $ref: '#/components/schemas/uuid'
+    ResponseOkData:
+      description: 'Request model to update attachment data.'
+      allOf:
+        -
+          $ref: '#/components/schemas/success'
+        -
+          $ref: '#/components/schemas/data'
+        -
+          $ref: '#/components/schemas/statusOk'
+        -
+          $ref: '#/components/schemas/messageOk'
+        -
+          $ref: '#/components/schemas/uuid'
+    ResponseError:
+      description: 'Request model to update attachment data.'
+      allOf:
+        -
+          $ref: '#/components/schemas/successFalse'
+        -
+          $ref: '#/components/schemas/errors'
+        -
+          $ref: '#/components/schemas/messageError'
+    ResponseCreated:
+      description: 'Request model to update attachment data.'
+      allOf:
+        -
+          $ref: '#/components/schemas/success'
+        -
+          $ref: '#/components/schemas/data'
+        -
+          $ref: '#/components/schemas/statusCreated'
+        -
+          $ref: '#/components/schemas/messageCreated'
+        -
+          $ref: '#/components/schemas/uuid'
